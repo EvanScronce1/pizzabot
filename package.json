@@ -1,0 +1,25 @@
+{
+  "name": "pizza_bot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index_sms.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "chrono-node": "^1.2.5",
+    "googleapis": "^17.1.0",
+    "hapi": "^16.1.0",
+    "lru-cache": "^4.0.2",
+    "mysql": "^2.13.0",
+    "ngrok": "^2.2.6",
+    "node-cache": "^4.1.1",
+    "nodemailer": "^3.1.4",
+    "phone": "^1.0.9",
+    "shortid": "^2.2.6",
+    "twilio": "^2.11.1",
+    "xoauth2": "^1.2.0"
+  }
+}

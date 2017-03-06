@@ -1,0 +1,75 @@
+{
+  "sms": {
+    "port": 8003,
+    "id": "",
+    "key": "",
+    "sqlServer": {
+      "host": "localhost",
+      "user": "root",
+      "password": "password",
+      "database": "pizza_bot_db_sms"
+    },
+    "ngrok": {
+      "sms": "https://4e438ed8.ngrok.io"
+    },
+    "google": {
+      "placeSearchApi": {
+        "url": "https://maps.googleapis.com/maps/api/place",
+        "radius": 5000,
+        "key": "AIzaSyAeMjVWq4mMTA40X-mPZPcLHoIf3HPMHH0"
+      }
+    },
+    "login_successful": "Login Successful."
+  },
+  "facebook": {
+    "port": 3000,
+    "id": "",
+    "key": "",
+    "userName": "Pizza Bot",
+    "botId": "1750512005202538",
+    "botSecret": "d21419e7004c89e00a8c2dd865d2801f",
+    "webhookVerificationToken": "verify_me_here",
+    "botAppToken": "1750512005202538|Fibatentvi1v7oXTW1LZkrPwDCc",
+    "sqlServer": {
+      "host": "localhost",
+      "user": "root",
+      "password": "password",
+      "database": "pizza_bot_db_fb"
+    },
+    "ngrok": {
+      "fb": ""
+    },
+    "facebook": {
+      "authenticate": "https://graph.facebook.com/v2.6/me/subscribed_apps",
+      "access_token": "EAAY4FNYZBwmoBAMw4sC537Xv48u1ArsYvZBfwnqHCYzmvIg8HyeP8I9M1FOZC0j8tigxhguuoHBWRnxUmQwqWz8QklNZBcxURxbuaz8rJmpYPgGZC89aBvawOilDlpWhrHUbFgb7oP2qIvhCYSvVM4HZCGNcGNvcde96DyGmoMrgZDZD",
+      "fbGraphMsgUrl": "https://graph.facebook.com/v2.6/me/messages",
+      "fbGraphApi": "https://graph.facebook.com/v2.6/",
+      "fbGraphThreadSettings": "https://graph.facebook.com/v2.6/me/thread_settings"
+    },
+    "google": {
+      "placeSearchApi": {
+        "url": ""
+      }
+    },
+    "uber": {
+      "deepLinkingUrl": "https://m.uber.com/ul/"
+    },    
+    "login_successful": "Login Successful."
+  },
+  "text": {
+      "welcomeText": "Hey this is Tony from the Next Door Pub & Pizzeria. Would you like to order a pizza today?",
+      "askPhoneNumber": "Perfect! What is your phone number?",
+      "wrongPhoneNumber": "Please enter valid phone number.",
+      "morePizza": "Great! Would you like any other pizza’s? ",
+      "sides": "Would you like to add an order of garlic bread for $3.50?",
+      "orderReady":"Awesome! Your order will be ready in about 30 mins.",
+      "textClub": "Would you like to join our text club for faster service and specials in the future?",
+      "finishText":"Great! Hope you have a great day",
+      "greetingText": "",
+      "addPizzaText": {
+        "type": "Great! What pizza would you like?",
+        "size": "What size would you like?",
+        "toppings" : "Perfect! Do you want everything on it?"
+      }
+    }
+}
