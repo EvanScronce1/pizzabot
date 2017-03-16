@@ -234,6 +234,15 @@ module.exports = {
             }
             else if(state.step == constants.STATES_TEXTCLUB){
                 sendTextMessage(config.text.finishText, senderId, channelId);
+
+                var state = {
+                    "step": constants.STATES_CONFIRMSTART,
+                    "message": inputText,
+                    "order": "",
+                    "order_id": "",
+                    "amount": "",
+                };
+                util.updateState(senderId, state, null);
                 
             }
             else {
