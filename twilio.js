@@ -6,8 +6,8 @@ var accountSid = 'AC387980ba37289ed349ded45fce980826';
 var authToken = 'c2eda4518dd43364d3c7fbbcc10eb109';
 var IpMessagingClient = require('twilio').IpMessagingClient;
 
-var client = new IpMessagingClient(accountSid, authToken);
-var service = client.services('IS9126f1ea37da4a8a880ee7ce62f3a627');
+var client_ip = new IpMessagingClient(accountSid, authToken);
+var service = client_ip.services('IS9126f1ea37da4a8a880ee7ce62f3a627');
 
 module.exports = {
     sendTextMessage : function(message_to_send, senderID) {
