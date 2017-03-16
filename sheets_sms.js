@@ -7,7 +7,7 @@ var constants = require('./constants.js');
 
 var SCOPES = ['https://www.googleapis.com/auth/spreadsheets.readonly'];
 var TOKEN_DIR = (process.env.HOME || process.env.HOMEPATH || process.env.USERPROFILE) + '/.credentials/';
-var TOKEN_PATH = TOKEN_DIR + 'sheets.googleapis.com-nodejs-quickstart.json';
+var TOKEN_PATH = TOKEN_DIR + 'sheets.googleapis.com-nodejs-quickstart-pizza.json';
 
 console.log(TOKEN_PATH);
 
