@@ -249,8 +249,23 @@ function greetUser(senderId, channelId, inputText) {
     var user_info = cacheHelper.getValue(senderId, constants.USER_CACHE);
 
     if(user_info == undefined){
-        sendTextMessage(config.text.welcomeText + config.text.welcomeText1, senderId, channelId);
-        var state = {
+
+        dbConnector.getLastOrder(senderId, function(order_data){
+            if(order_data){
+                sendTextMessage(config.text.welcomeText2 + config.text.welcomeText3, senderId, channelId);
+                var state = {
+                    "step": constants.STATES_LASTORDER,
+                    "message": inputText,
+                    "order": order_data,
+                    "order_id": "",
+                    "amount": "",
+                    "phone":""
+                };
+                util.updateState(senderId, state, null);
+            }
+            else{
+                sendTextMessage(config.text.welcomeText + config.text.welcomeText1, senderId, channelId);
+                var state = {
                     "step": constants.STATES_ASKPHONE,
                     "message": inputText,
                     "order": "",
@@ -258,7 +273,9 @@ function greetUser(senderId, channelId, inputText) {
                     "amount": "",
                     "phone":""
                 };
-        util.updateState(senderId, state, null);
+                util.updateState(senderId, state, null);
+            }
+        });
     }
     else{
         user_info = JSON.parse(user_info);
