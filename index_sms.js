@@ -31,7 +31,7 @@ var phone = require('phone');
 
 server.connection({
     host: '0.0.0.0',
-    port: 9090
+    port: 9091
 });
 
 var options = {
@@ -165,7 +165,7 @@ server.route({
 
 server.route({
     method: 'GET',
-    path: '/refresh_users/',
+    path: '/refresh_users',
     handler: function(request, reply) {
         // var pizzaCache = new Object();
         // var usercache = LRU(options);
@@ -177,9 +177,17 @@ server.route({
 
 server.route({
     method: 'GET',
+    path: '/',
+    handler: function(request, reply) {
+        reply("Its working !!!!");
+    }
+});
+
+server.route({
+    method: 'GET',
     path: '/close_tasks/',
     handler: function(request, reply) {
-        waitThread(false);
+        //waitThread(false);
     }
 });
 
@@ -206,8 +214,8 @@ server.start((err) => {
         throw err;
     }
     console.log('Server running at:', server.info.uri);
-    accessAllowedUsers();
-    /*
+    //accessAllowedUsers();
+    
     dbConnector.setupDB(function(val){
         if (!val) {
             //console.log('Database connection error');
@@ -217,7 +225,7 @@ server.start((err) => {
             //initalizeCalendar();
             //waitThread(true);
         }
-    });*/
+    });
 });
 
 function waitThread(start_thread) {

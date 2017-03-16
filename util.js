@@ -6,29 +6,39 @@ var cache = require('./cacheHelper'),
 module.exports = {
 
     getState: function (sender, callback) {
-        return cache.getValue(sender, constants.USERSTATE_CACHE);
+        //return cache.getValue(sender, constants.USERSTATE_CACHE);
+        dbConnector.getState(sender, function(state) {
+                console.log(state);
+                callback(state);
+        });
     },
 
-    saveState: function (sender, state) {
+    saveState: function (sender, state, callback) {
         
-        cache.addKeyValue(sender, state, constants.USERSTATE_CACHE);
-        // dbConnector.saveState(sender, state, function(value){
-        //     if(value)
-        //         console.log("state saved")
-        // });
+        //cache.addKeyValue(sender, state, constants.USERSTATE_CACHE);
+        dbConnector.saveState(sender, state, function(value){
+            if(value){
+                callback(value);
+            }         
+        });
 
     },
 
     updateState: function (sender, newState, callback) {
-        var state = module.exports.getState(sender, null);
-
-        if (state == undefined)
-            state = newState;
-        else {
-            for (var key in newState) {
-                state[key] = newState[key];
+        module.exports.getState(sender, function(state) {
+            if (state == undefined)
+                state = newState;
+            else {
+                for (var key in newState) {
+                    state[key] = newState[key];
+                }
             }
-        }
-        module.exports.saveState(sender, state, null);
+  
+            module.exports.saveState(sender, state, function(done){
+                if(done && callback){
+                    callback(state);
+                }
+            });
+        });
     },
 };

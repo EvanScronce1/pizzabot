@@ -57,7 +57,10 @@
     "login_successful": "Login Successful."
   },
   "text": {
-      "welcomeText": "Hey this is Tony from the Next Door Pub & Pizzeria. Would you like to order a pizza today?",
+      "welcomeText": "Hey this is Tony from the Next Door Pub & Pizzeria.",
+      "welcomeText1":"Would you like to order a pizza today?",
+      "welcomeText2":"Tony from the Next Door Pub & Pizzeria is here to help! ",
+      "welcomeText3":"Do want to order what you ordered last time or something else?",
       "askPhoneNumber": "Perfect! What is your phone number?",
       "wrongPhoneNumber": "Please enter valid phone number.",
       "morePizza": "Great! Would you like any other pizza’s? ",
@@ -70,6 +73,8 @@
         "type": "Great! What pizza would you like?",
         "size": "What size would you like?",
         "toppings" : "Perfect! Do you want everything on it?"
-      }
+      },
+      "fallbackText1": "We’re sorry but we’re having trouble. To better serve you, give us a call us at 888-888-8888 and we’ll be happy to help!",
+      "fallbackText2": "We’re sorry, but we only offer Pizza ordering for now. Do you like ordering this way, if so Reply YES and we’ll get thinking on adding the entire menu"
     }
 }
