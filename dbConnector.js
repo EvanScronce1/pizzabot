@@ -4,7 +4,7 @@ var shortid = require('shortid');
 var dbconn = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    password: 'Monotype123#',
+    password: 'password',
     database: 'pizzabot'
 });
 
@@ -60,7 +60,7 @@ module.exports = {
         
         var user_record = {
             sender_id: sender,
-            user_info: user_info[0] + "##" + user_info[1] + "##" + user_info[2]
+            user_info: JSON.stringify(user_info)
         };
         dbconn.query('INSERT IGNORE INTO user SET ?', user_record, function(err, res) {
             if(err){
@@ -69,6 +69,45 @@ module.exports = {
             else{
                 callback(true);
             }
+        });
+    },
+    getUser: function (sender, callback){
+        dbconn.query('SELECT user_info FROM user where sender_id = ?', sender, function(err, res){
+            if(err){
+                callback(null);
+            }
+            else{
+                if(callback){
+                    if(res[0])
+                        callback(JSON.parse(res[0].user_info));
+                    else
+                        callback(res[0]);   
+                }
+            }
+        });
+    },
+    updateUser: function (sender, newInfo, callback){
+        module.exports.getUser(sender, function(user_info){
+            if(!user_info){
+                if(callback)
+                    callback(false);
+                return;
+            }
+
+            for (var key in newInfo) {
+                    user_info[key] = newInfo[key];
+                }
+            var query = "UPDATE user SET user_info ='" + JSON.stringify(user_info) + "' where sender_id = '"+ sender +"'";
+            dbconn.query(query, function(err, res){
+                if(err){
+                    if(callback)
+                        callback(false);
+                }
+                else{
+                    if(callback)
+                        callback(true);
+                }
+            }) ;    
         });
     },
     addOrder: function(sender, order_info, callback){

@@ -26,8 +26,8 @@
     "id": "",
     "key": "",
     "userName": "Pizza Bot",
-    "botId": "1750512005202538",
-    "botSecret": "d21419e7004c89e00a8c2dd865d2801f",
+    "botId": "426627117686766",
+    "botSecret": "44d26b5499f130b48781701df772fa9b",
     "webhookVerificationToken": "verify_me_here",
     "botAppToken": "1750512005202538|Fibatentvi1v7oXTW1LZkrPwDCc",
     "sqlServer": {
@@ -39,9 +39,9 @@
     "ngrok": {
       "fb": ""
     },
-    "facebook": {
+    "url": {
       "authenticate": "https://graph.facebook.com/v2.6/me/subscribed_apps",
-      "access_token": "EAAY4FNYZBwmoBAMw4sC537Xv48u1ArsYvZBfwnqHCYzmvIg8HyeP8I9M1FOZC0j8tigxhguuoHBWRnxUmQwqWz8QklNZBcxURxbuaz8rJmpYPgGZC89aBvawOilDlpWhrHUbFgb7oP2qIvhCYSvVM4HZCGNcGNvcde96DyGmoMrgZDZD",
+      "access_token": "EAAGEA93NHZB4BAJqfV6RZAKyyzMYZA3jkh2uNzQNWtU9Ci9WZBT8YUGg00fDWRjRzOFO9ZB04POJ4psuG4OxeCoYlo9FfbD7AU4Ah9w9NgHaHwy0XZAJKN1XiU2w0pCuONMpcUd6o8rBsVHrjdpX7MvNbcI3RgEZAknC7BXRdEpG8FZBpU4401m0",
       "fbGraphMsgUrl": "https://graph.facebook.com/v2.6/me/messages",
       "fbGraphApi": "https://graph.facebook.com/v2.6/",
       "fbGraphThreadSettings": "https://graph.facebook.com/v2.6/me/thread_settings"

@@ -41,6 +41,12 @@ const ACTION_CONFIRMQUESTIONNO = "confirmNo";
 const STATE_MESSAGE = "message";
 const STATE_STEP = "step";
 
+const INPUT_SMS = 1;
+const INPUT_FB= 2;
+
+exports.INPUT_SMS = INPUT_SMS;
+exports.INPUT_FB = INPUT_FB;
+
 exports.USERSTATE_CACHE = USERSTATE_CACHE;
 exports.PIZZA_CACHE = PIZZA_CACHE;
 exports.USER_CACHE = USER_CACHE;

@@ -1,6 +1,7 @@
 var cache = require('./cacheHelper'),
     constants = require('./constants'),
-    dbConnector = require('./dbConnector.js');
+    dbConnector = require('./dbConnector.js'),
+    request = require('request'),
     config = require("./config.json");
 
 module.exports = {
@@ -39,6 +40,28 @@ module.exports = {
                     callback(state);
                 }
             });
+        });
+    },
+
+    sendRequest: function (url, qs, method, headers, body, form, callback, json) {
+        //console.log("url", url, "qs", qs, "body", body)
+        var js = true;
+        if (json != undefined)
+            js = false;
+        request({
+            url: url, //URL to hit
+            qs: qs, //Query string data
+            method: method,
+            headers: headers,
+            json: js,
+            body: body,
+            form: form
+        }, function (error, response, body) {
+            if(error){
+                throw error;
+            }
+            if (callback)
+                callback(error, response, body);
         });
     },
 };
