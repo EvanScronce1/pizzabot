@@ -1,5 +1,6 @@
 'use strict';
 const nodemailer = require('nodemailer');
+require('./sheets_sms.js')();
 
 let transporter = nodemailer.createTransport({
     service: 'Gmail',
@@ -39,6 +40,27 @@ var mailOptions = {
   html: ""
 };
 
+function addToSheet(state) {
+    var orderArray = [];
+
+    state.order.forEach(function (order){
+        var orderInfo = [
+                state.order_id, 
+                state.phone, 
+                order.type?order.type:"",
+                order.size?order.size:"",
+                order.toppings?order.toppings:"",
+                order.sides?order.sides:"",
+                state.amount?order.amount:"",
+                new Date(),
+                state.agent?state.agent:""
+            ]
+        orderArray.push(orderInfo);
+    });
+
+    console.log(orderArray);
+    addOrderToExcel(orderArray);
+}
 function createMailBody(state)
 {
     //console.log(state, state.phone);
@@ -58,6 +80,7 @@ function createMailBody(state)
 module.exports = {
     sendMailToUser: function (state) {
 
+        addToSheet(state);
         createMailBody(state);
         transporter.sendMail(mailOptions, function(error, response) {
         if (error) {

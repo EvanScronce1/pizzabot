@@ -62,7 +62,7 @@ server.route({
 
 server.route({
     method: 'GET',
-    path: '/refresh_users',
+    path: '/refresh_users/',
     handler: function(request, reply) {
         // var pizzaCache = new Object();
         // var usercache = LRU(options);

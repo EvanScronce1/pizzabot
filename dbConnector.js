@@ -112,6 +112,7 @@ module.exports = {
     },
     addOrder: function(sender, order_info, callback){
         var timestamp = Math.floor(new Date() / 1000);
+        shortid.characters('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ$@')
         var order_id = shortid.generate();
         var body = {
             order_id: order_id,
@@ -157,6 +158,37 @@ module.exports = {
                     callback(res[0]);
             }
         });
+    },
+    getDetailsFromOrderId:function(orderId, callback){
+        console.log(orderId, typeof(orderId))
+        dbconn.query("select m2.* from order_info m1 JOIN state m2 ON (m1.sender_id = m2.sender_id) where order_id = ? AND order_completed = -1", orderId, function(err, res){
+            if(err){
+                console.log("error in getDetailsFromOrderId");
+                callback(null);
+            }
+            else{
+                if(res[0]){
+                    callback(JSON.parse(res[0].state), res[0].sender_id);
+                }
+                else
+                    callback(res[0]);
+            }
+        });
+    },
+    checkIfOrderIsCompleted:function(orderId, callback){
+        console.log(orderId, typeof(orderId))
+        dbconn.query("select m2.* from order_info m1 JOIN state m2 ON (m1.sender_id = m2.sender_id) where order_id = ? AND order_completed != -1", orderId, function(err, res){
+            if(err){
+                console.log("error in getDetailsFromOrderId");
+                callback(null);
+            }
+            else{
+                if(res[0]){
+                    callback(JSON.parse(res[0].state), res[0].sender_id);
+                }
+                else
+                    callback(res[0]);
+            }
+        });
     }
-
 };

@@ -5,25 +5,35 @@ var googleAuth = require('google-auth-library');
 var cacheHelper = require('./cacheHelper.js');
 var constants = require('./constants.js');
 
-var SCOPES = ['https://www.googleapis.com/auth/spreadsheets.readonly'];
+var SCOPES = ['https://www.googleapis.com/auth/spreadsheets'];
 var TOKEN_DIR = (process.env.HOME || process.env.HOMEPATH || process.env.USERPROFILE) + '/.credentials/';
 var TOKEN_PATH = TOKEN_DIR + 'sheets.googleapis.com-nodejs-quickstart-pizza.json';
 
 console.log(TOKEN_PATH);
 
 module.exports = function() {
-    this.accessAllowedUsers = function(userscache,agentscache) {
+    this.accessAllowedUsers = function() {
         fs.readFile('client_secret.json', function processClientSecrets(err, content) {
             if (err) {
                 console.log('Error loading client secret file: ' + err);
                 return;
             }
-            authorize(JSON.parse(content), listMajors, userscache,agentscache);
+            authorize(JSON.parse(content), listMajors);
+        });
+    }
+
+    this.addOrderToExcel = function(order_info) {
+        fs.readFile('client_secret.json', function processClientSecrets(err, content) {
+            if (err) {
+                console.log('Error loading client secret file: ' + err);
+                return;
+            }
+            authorize(JSON.parse(content), addOrder, order_info);
         });
     }
 }
 
-function authorize(credentials, callback, userscache,agentscache) {
+function authorize(credentials, callback, param1) {
     var clientSecret = credentials.installed.client_secret;
     var clientId = credentials.installed.client_id;
     var redirectUrl = credentials.installed.redirect_uris[0];
@@ -35,7 +45,11 @@ function authorize(credentials, callback, userscache,agentscache) {
             getNewToken(oauth2Client, callback);
         } else {
             oauth2Client.credentials = JSON.parse(token);
-            callback(oauth2Client, userscache,agentscache);
+            if(param1 != undefined) {
+                callback(oauth2Client, param1);
+            } else {
+                callback(oauth2Client);
+            }     
         }
     });
 }
@@ -76,7 +90,7 @@ function storeToken(token) {
     console.log('Token stored to ' + TOKEN_PATH);
 }
 
-function listMajors(auth, userscache,agentscache) {
+function listMajors(auth) {
     var sheets = google.sheets('v4');
     sheets.spreadsheets.values.get({
             auth: auth,
@@ -93,10 +107,7 @@ function listMajors(auth, userscache,agentscache) {
                 console.log('No data found.');
             } else {
                 for (var i = 0; i < rows.length; i++) {
-                    
                     cacheHelper.addKeyValue(rows[i][2], JSON.stringify(rows[i]), constants.USER_CACHE);
-
-                    //userscache.set(rows[i][2], JSON.stringify(rows[i]));
                     console.log(JSON.stringify(rows[i]));
                 }
             }
@@ -117,7 +128,6 @@ function listMajors(auth, userscache,agentscache) {
                 console.log('No data found.');
             } else {
                 for (var i = 0; i < rows.length; i++) {
-                    //cacheHelper.addKeyValue(rows[i][0], JSON.stringify(rows[i]), constants.PIZZA_CACHE);
                     if(i == 0)
                         cacheHelper.addKeyValue("type", rows[i],constants.PIZZA_CACHE);
                     else if(i == 1)
@@ -128,5 +138,46 @@ function listMajors(auth, userscache,agentscache) {
                     console.log(rows[i]);
                 }
             }
+        });
+    
+    sheets.spreadsheets.values.get({
+            auth: auth,
+            spreadsheetId: '1Y4RsngXCj0G5jrRLo-HXPctcT2YILtOR5xEOBRK6J78',
+            range: 'Agents_SMS',
+        },
+        function(err, response) {
+            if (err) {
+                console.log('The API returned an error: ' + err);
+                return;
+            }
+            var rows = response.values;
+            if (rows.length == 0) {
+                console.log('No data found.');
+            } else {
+                for (var i = 0; i < rows.length; i++) {
+                    cacheHelper.addKeyValue(rows[i][1], JSON.stringify(rows[i]), constants.AGENTS_SMS_CACHE);
+                    console.log(JSON.stringify(rows[i]));
+                }
+            }
+        });
+}
+
+function addOrder(auth, order_info){
+    var sheets = google.sheets('v4');
+    sheets.spreadsheets.values.append({
+            auth: auth,
+            spreadsheetId: '1Y4RsngXCj0G5jrRLo-HXPctcT2YILtOR5xEOBRK6J78',
+            range: 'Orders',
+            valueInputOption: 'RAW',
+            resource: {
+                values: order_info
+            }   
+        },
+        function(err, response) {
+            if (err) {
+                console.log('The API returned an error: ' + err);
+                return;
+            }
+            console.log(response);
         });
 }

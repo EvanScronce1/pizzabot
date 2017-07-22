@@ -16,8 +16,12 @@ module.exports = {
                 console.log("duplicate");
                 return;
             }*/
-            if (checkForGreetings(inputText) == true || state == undefined) {
-                greetUser(senderId, channelId, inputText, inputType);
+
+            if(state == undefined && checkForAgent(senderId, inputText)){
+                processAgentInput(senderId, channelId, inputText, inputType);
+            }
+            else if (checkForGreetings(inputText) == true || state == undefined) {
+                greetUser(senderId, channelId, inputText, inputType, state);
             }
             else if(state.step == constants.STATES_LASTORDER){
                 if(inputText.toLowerCase().indexOf("last") != -1){
@@ -119,7 +123,14 @@ module.exports = {
             else if(state.step == constants.STATES_PIZZATYPE){
 
                 var size = cacheHelper.getValue("size", constants.PIZZA_CACHE);
-                sendTextMessage(config.text.addPizzaText.size + " We have " + size.toString(), senderId, channelId, inputType);
+                var str = "";
+                for(i = 0; i < size.length; i++){
+                    if(i == size.length - 1)
+                        str += "and " + size[i] + ".";
+                    else
+                        str += size[i] + ", ";
+                }
+                sendTextMessage(config.text.addPizzaText.size + " We have " + str, senderId, channelId, inputType);
                 var orders = [];
                 if(state.order && state.order.length)
                     orders = state.order;
@@ -198,7 +209,7 @@ module.exports = {
             else if(state.step == constants.STATES_ADDSIDES){
                 var localstate = "";
                 if(inputText.toLowerCase() === "yes"){
-                    sendTextMessage("Added. " + config.text.orderReady, senderId, channelId, inputType);
+                    sendTextMessage("Added. " + config.text.confirmOrder, senderId, channelId, inputType);
                     var order = {"sides": "garlic bread"}
                     var orders = [];
                     if(state.order && state.order.length)
@@ -207,16 +218,15 @@ module.exports = {
                     orders.push(order);
                     localstate = {
                         "order":orders,
-                        "step": constants.STATES_TEXTCLUB,
+                        "step": constants.STATES_AGENTCONFIRMORDER,
                         "message": inputText
                     };
                     //util.updateState(senderId, state, null);
-                        
                 }
                 else if(inputText.toLowerCase() === "no"){
-                    sendTextMessage(config.text.orderReady, senderId, channelId, inputType);
+                    sendTextMessage(config.text.confirmOrder, senderId, channelId, inputType);
                     localstate = {
-                            "step": constants.STATES_TEXTCLUB,
+                            "step": constants.STATES_AGENTCONFIRMORDER,
                             "message": inputText
                         };
                 }
@@ -224,14 +234,17 @@ module.exports = {
                     sendTextMessage(config.text.fallbackText1, senderId, channelId, inputType);
                 }
                 
-                util.updateState(senderId, localstate, function(newState){
-                    mail.sendMailToUser(newState);
-                    dbConnector.updateOrder(newState, function(success){
-                        if(success){
-                            sendTextMessage(config.text.textClub, senderId, channelId, inputType);
-                        }
-                    });
-                });                      
+                if(localstate != ""){
+                    util.updateState(senderId, localstate, function(newState){
+                        sendTextToAgents(newState, channelId, inputType);
+                    // mail.sendMailToUser(newState);
+                    // dbConnector.updateOrder(newState, function(success){
+                    //     if(success){
+                    //         sendTextMessage(config.text.textClub, senderId, channelId, inputType);
+                    //     }
+                    // });
+                }); 
+                }                     
             }
             else if(state.step == constants.STATES_TEXTCLUB){
                 sendTextMessage(config.text.finishText, senderId, channelId, inputType);
@@ -250,12 +263,12 @@ module.exports = {
                 sendTextMessage(config.text.fallbackText1, senderId, channelId, inputType);
             }
         });
-    }
+    },
 };
 
-var greet_arr = ["BONJOUR", "HOLA", "CIAO", "OLA", "HI", "HEY"];
+var greet_arr = ["BONJOUR", "HOLA", "CIAO", "OLA", "HI", "HEY", "START", "START OVER"];
 
-function greetUser(senderId, channelId, inputText, inputType) {
+function greetUser(senderId, channelId, inputText, inputType, lastState) {
     var user_info = cacheHelper.getValue(senderId, constants.USER_CACHE);
 
     if(user_info == undefined){
@@ -274,7 +287,7 @@ function greetUser(senderId, channelId, inputText, inputType) {
                         "order": order_data,
                         "order_id": "",
                         "amount": "",
-                        "phone": (user && user.phone)? user.phone:""
+                        "phone": (user && user.phone)? user.phone:((lastState && lastState.phone)? lastState.phone: senderId)
                     };
                     util.updateState(senderId, state, null);
                 });
@@ -404,12 +417,84 @@ function showPizzaText(state, senderId, channelId, inputText, inputType){
     });            
 }
 
+function sendTextToAgents(state, channelId, inputType) {
+    var allKeys = cacheHelper.getAllKeys(constants.AGENTS_SMS_CACHE);
+    allKeys.forEach(function(agentId) {
+        var value = JSON.parse(cacheHelper.getValue(agentId, constants.AGENTS_SMS_CACHE));
+        console.log(value, value[0]);
+        var text = "Hey " + value[0] + ". We have received an order. Please respond with 'YES " + state.order_id + "' or NO. ";
+        sendTextMessage(text, agentId, null, constants.INPUT_SMS);
+    }, this);
+}
+
+function checkForAgent (agentId, inputText){
+     var agentInfo =  JSON.parse(cacheHelper.getValue(agentId, constants.AGENTS_SMS_CACHE));
+     if(agentInfo != undefined && ((inputText.toLowerCase().indexOf("yes") != -1) || (inputText.toLowerCase().indexOf("no") != -1))){
+         return true;
+     } else {
+         return false;
+     }
+}
+
+function processAgentInput(agentId, channelId, inputText, inputType){
+    var agentInfo =  cacheHelper.getValue(agentId, constants.AGENTS_SMS_CACHE);
+    if(agentInfo != undefined && ((inputText.toLowerCase().indexOf("yes") != -1) || (inputText.toLowerCase().indexOf("no") != -1))){
+        var inputArray = inputText.split(" ");
+        dbConnector.getDetailsFromOrderId(inputArray[1], function(state, senderId){
+            console.log(state,senderId)
+            if(state == undefined && senderId){
+                sendTextMessage(config.text.fallbackText3, senderId, channelId, inputType);
+            } else if (state == undefined && senderId == undefined) {
+                dbConnector.checkIfOrderIsCompleted(inputArray[1], function(state, senderId){
+                    if(state && senderId){
+                        sendTextMessage(config.text.agentFallbackText1, agentId, channelId, inputType);
+                    }
+                    else {
+                        sendTextMessage(config.text.agentFallbackText, agentId, channelId, inputType);
+                    }
+                });
+            } else if (state.step == constants.STATES_AGENTCONFIRMORDER){
+                var localstate = "";
+                if(inputArray[0].toLowerCase() === "yes"){
+                    localstate = {
+                        "step": constants.STATES_TEXTCLUB,
+                        "agent":agentInfo,
+                        "message": inputText
+                    };
+                    util.updateState(senderId, localstate, function(newState){
+                        mail.sendMailToUser(newState);
+                        dbConnector.updateOrder(newState, function(success){
+                            if(success){
+                                sendTextMessage(config.text.orderReady, senderId, channelId, inputType);
+                                sendTextMessage(config.text.textClub, senderId, channelId, inputType);
+                            }
+                        });
+                    });
+                } else if(inputArray[0].toLowerCase() === "no"){
+                    localstate = {
+                        "step": constants.STATES_CONFIRMSTART,
+                        "message": inputText
+                    };
+                    util.updateState(senderId, localstate, function(newState){
+                        sendTextMessage(config.text.fallbackText3, senderId, channelId, inputType);
+                    });
+                }
+            }
+        });
+    } else {
+        return;
+    }
+}
+
 function sendTextMessage(sendText, senderId, channelId, inputType){
     
     if(inputType == constants.INPUT_FB)
         fb.sendTextMessage(sendText, senderId);
     else{
-        //twilio.sendIpMessage(sendText, channelId);
-        twilio.sendTextMessage(sendText, senderId);
+        if(channelId) {
+            twilio.sendIpMessage(sendText, channelId);
+        } else {
+            twilio.sendTextMessage(sendText, senderId);
+        }       
     }
 }
