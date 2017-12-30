@@ -130,7 +130,9 @@ module.exports = {
                     else
                         str += size[i] + ", ";
                 }
-                sendTextMessage(config.text.addPizzaText.size + " We have " + str, senderId, channelId, inputType);
+                //sendTextMessage(config.text.addPizzaText.size + " We have " + str, senderId, channelId, inputType);
+                sendTextMessage(config.text.addPizzaText.size, senderId, channelId, inputType);
+                
                 var orders = [];
                 if(state.order && state.order.length)
                     orders = state.order;
@@ -150,7 +152,8 @@ module.exports = {
             }
             else if(state.step == constants.STATES_PIZZASIZE){
                 var toppings = cacheHelper.getValue("toppings", constants.PIZZA_CACHE);
-                sendTextMessage(config.text.addPizzaText.toppings + " We have " + toppings.join(), senderId, channelId, inputType);
+                //sendTextMessage(config.text.addPizzaText.toppings + " We have " + toppings.join(), senderId, channelId, inputType);
+                sendTextMessage(config.text.addPizzaText.toppings , senderId, channelId, inputType);
                 var orders = [];
                 if(state.order && state.order.length)
                     orders = state.order;
@@ -187,8 +190,8 @@ module.exports = {
                             else
                                 str += type[i] + ", ";
                         }
-                    sendTextMessage(config.text.addPizzaText.type + " We have " + str, senderId, channelId, inputType);
-                    //sendTextMessage(config.text.addPizzaText.type, senderId, channelId);
+                    //sendTextMessage(config.text.addPizzaText.type + " We have " + str, senderId, channelId, inputType);
+                    sendTextMessage(config.text.addPizzaText.type, senderId, channelId, inputType);
                         var state = {
                             "step": constants.STATES_PIZZATYPE,
                             "message": inputText
@@ -395,7 +398,8 @@ function showPizzaText(state, senderId, channelId, inputText, inputType){
         else
             str += type[i] + ", ";
     }
-    sendTextMessage(config.text.addPizzaText.type + " We have " + str, senderId, channelId, inputType);
+    //sendTextMessage(config.text.addPizzaText.type + " We have " + str, senderId, channelId, inputType);
+    sendTextMessage(config.text.addPizzaText.type, senderId, channelId, inputType);
 
     dbConnector.addOrder(senderId, null, function(order_id){
         var state = {
