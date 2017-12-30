@@ -78,7 +78,7 @@
       "fallbackText1": "We’re sorry but we’re having trouble. To better serve you, give us a call us at 262-248-9551 and we’ll be happy to help!",
       "fallbackText2": "We’re sorry, but we only offer Pizza ordering for now. Do you like ordering this way, if so Reply YES and we’ll get thinking on adding the entire menu",
       "fallbackText3":"We aren't able to process your order, please give us a call at: (262) 248-9551 or type Start Over. ",
-      "agentFallbackText" : "Please send input in correct format. SEND YES <orderId> or NO. ",
+      "agentFallbackText" : "Please send input in correct format. SEND YES <orderId> or NO <orderId>. ",
       "agentFallbackText1" : "Order is already picked by an agent. "
     }
 }
