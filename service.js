@@ -426,7 +426,7 @@ function sendTextToAgents(state, channelId, inputType) {
     allKeys.forEach(function(agentId) {
         var value = JSON.parse(cacheHelper.getValue(agentId, constants.AGENTS_SMS_CACHE));
         console.log(value, value[0]);
-        var text = "Hey " + value[0] + ". We have received an order. Please respond with 'YES " + state.order_id + "' or NO. ";
+        var text = "Hey " + value[0] + ". We have received an order. Please respond with 'YES " + state.order_id + "' or 'NO " + state.order_id + "' .";
         sendTextMessage(text, agentId, null, constants.INPUT_SMS);
     }, this);
 }
