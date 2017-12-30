@@ -12,12 +12,12 @@ var fb = require('./facebook.js');
 module.exports = {
     handleRequest : function(inputText, senderId, channelId, inputType) {
         util.getState(senderId, function(state){
-            /*if(state!=undefined && inputText == state.message){
+           /* if(state!=undefined && inputText == state.message){
                 console.log("duplicate");
                 return;
             }*/
 
-            if(state == undefined && checkForAgent(senderId, inputText)){
+            if(checkForAgent(senderId, inputText)){
                 processAgentInput(senderId, channelId, inputText, inputType);
             }
             else if (checkForGreetings(inputText) == true || state == undefined) {
@@ -428,7 +428,8 @@ function sendTextToAgents(state, channelId, inputType) {
 }
 
 function checkForAgent (agentId, inputText){
-     var agentInfo =  JSON.parse(cacheHelper.getValue(agentId, constants.AGENTS_SMS_CACHE));
+     console.log(agentId,cacheHelper.getValue(agentId, constants.AGENTS_SMS_CACHE))
+     var agentInfo =  cacheHelper.getValue(agentId, constants.AGENTS_SMS_CACHE);
      if(agentInfo != undefined && ((inputText.toLowerCase().indexOf("yes") != -1) || (inputText.toLowerCase().indexOf("no") != -1))){
          return true;
      } else {
