@@ -130,8 +130,8 @@ module.exports = {
                     else
                         str += size[i] + ", ";
                 }
-                //sendTextMessage(config.text.addPizzaText.size + " We have " + str, senderId, channelId, inputType);
-                sendTextMessage(config.text.addPizzaText.size, senderId, channelId, inputType);
+                sendTextMessage(config.text.addPizzaText.size + " We have " + str, senderId, channelId, inputType);
+                //sendTextMessage(config.text.addPizzaText.size, senderId, channelId, inputType);
                 
                 var orders = [];
                 if(state.order && state.order.length)
