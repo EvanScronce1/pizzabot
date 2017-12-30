@@ -57,23 +57,23 @@
     "login_successful": "Login Successful."
   },
   "text": {
-      "welcomeText": "Hey this is Tony from the Next Door Pub & Pizzeria. ",
+      "welcomeText": "Hi, this is Tony for the Next Door Pub & Pizzeria I’m here to help! ",
       "welcomeText1":"Would you like to order a pizza today? ",
       "welcomeText2":"Tony from the Next Door Pub & Pizzeria is here to help! ",
-      "welcomeText3":"Do want to order what you ordered last time or something else? ",
+      "welcomeText3":"Do you want order what you ordered last time or are you in the mood for something else? ",
       "askPhoneNumber": "Perfect! What is your phone number? ",
       "wrongPhoneNumber": "Please enter valid phone number. ",
-      "morePizza": "Great! Would you like any other pizzas? ",
-      "sides": "Would you like to add an order of garlic bread for $3.50 plus tax? ",
-      "confirmOrder": "Please wait while we confirm your order. ",
+      "morePizza": "Great would you like any other pizzas? ",
+      "sides": "Would you like an order of Garlic Bread for $3.50 plus Tax? ",
+      "confirmOrder": "We will text you back with confirmation of your order. ",
       "orderReady":"Awesome! Your order will be ready in about 30 mins. ",
       "textClub": "Would you like to join our text club for faster service and specials in the future? ",
       "finishText":"Great! Hope you have a great day ",
       "greetingText": "",
       "addPizzaText": {
-        "type": "Great! What pizza would you like? ",
+        "type": "Great! What Kind of pizza would you like? CLICK HERE TO SEE OUR PIZZA MENU. https://goo.gl/JcBdbu ",
         "size": "What size would you like? ",
-        "toppings" : "Perfect! Do you want everything on it? "
+        "toppings" : "Perfect! Would you like any additional toppings? CLICK HERE FOR A LIST OF TOPPINGS https://goo.gl/xQt6ij "
       },
       "fallbackText1": "We’re sorry but we’re having trouble. To better serve you, give us a call us at 262-248-9551 and we’ll be happy to help!",
       "fallbackText2": "We’re sorry, but we only offer Pizza ordering for now. Do you like ordering this way, if so Reply YES and we’ll get thinking on adding the entire menu",
