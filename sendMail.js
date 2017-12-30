@@ -34,7 +34,7 @@ transporter.on('token', token => {
 // };
 var mailOptions = {
   from: "pizzabot4@gmail.com",
-  to: "pizzabot4@gmail.com",
+  to: "chadbittner@gmail.com",
   subject: "",
   generateTextFromHTML: true,
   html: ""
